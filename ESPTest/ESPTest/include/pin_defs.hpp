@@ -1,7 +1,9 @@
 #ifndef PIN_DEFS_HPP
 #define PIN_DEFS_HPP
 
-#define ONBOARD_LED      2
+//#define ONBOARD_LED      2
+#define RXD1             2
+#define TXD1             4
 #define RXD2            16
 #define TXD2            17
 #define THROTTLE_GRIP   32

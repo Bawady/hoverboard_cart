@@ -7,10 +7,6 @@
 
 #include "cart_state.hpp"
 
-void handleRoot(WebServer& server, HardwareSerial& serial);
-
-void handleSet(WebServer& server, CartState& state);
-
-void handleStateRequest(WebServer& server, HardwareSerial& serial, CartState& state);
+void register_web_handles(WebServer& server, HardwareSerial& serial, CartState& cart_state);
 
 #endif // WEB_CTRL_HPP
