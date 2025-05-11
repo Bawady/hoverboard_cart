@@ -1,16 +1,10 @@
-#ifndef WEB_ASSETS_HPP
-#define WEB_ASSETS_HPP
-
-#include <Arduino.h>
-
-const char html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.jsdelivr.net/npm/raphael@2.3.0/raphael.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/justgage@1.3.5/justgage.min.js" defer></script>
+  <script src="raphael.min.js" defer></script>
+  <script src="justgage.min.js" defer></script>
   <title>Cockpit</title>
   <style>
     body {
@@ -22,7 +16,7 @@ const char html[] PROGMEM = R"rawliteral(
     .top-bar {
       background-color: #333;
       color: white;
-      
+
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -155,7 +149,7 @@ const char html[] PROGMEM = R"rawliteral(
         <div id="gaugeRpm" style="width:250px; height:160px;"></div>
         <div id="gaugeSpeed" style="width:250px; height:160px;"></div>
       </div>
-    
+
       <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; font-size: 12px; color: #555;">
         <div style="background: #f9f9f9; border-radius: 5px; padding: 6px 10px; min-width: 90px;">
           <div><strong style="font-size: 11px;">Board Temperature</strong></div>
@@ -168,23 +162,27 @@ const char html[] PROGMEM = R"rawliteral(
           Rear: <span id="volt1">--</span>V
         </div>
       </div>
-      
+
     </div>
 
-    <div id="configuration" class="section">
+    <div id="configuration" class="section", style="text-align:center">
       <h3>Click the axes to toggle them!</h3>
-      <svg id="carSvg" width="100" height="200" viewBox="0 0 100 200" style="margin: 10px auto; display: block;">
-        <rect x="20" y="40" width="60" height="120" rx="2" ry="2" fill="#ccc" />
-    
-        <line id="frontAxle" x1="10" y1="50" x2="90" y2="50" stroke="#00aaff" stroke-width="6" cursor="pointer" />
-        <rect id="frontLeft" x="5" y="40" width="10" height="20" rx="2" ry="5" fill="#00aaff" />
-        <rect id="frontRight" x="85" y="40" width="10" height="20" rx="2" ry="5" fill="#00aaff" />
-    
-        <line id="rearAxle" x1="10" y1="150" x2="90" y2="150" stroke="#00aaff" stroke-width="6" cursor="pointer" />
-        <rect id="rearLeft" x="5" y="140" width="10" height="20" rx="2" ry="5" fill="#00aaff" />
-        <rect id="rearRight" x="85" y="140" width="10" height="20" rx="2" ry="5" fill="#00aaff" />
-      </svg>
-    
+      <div id="svgContainer">
+        <svg id="carSvg" width="200" height="400" viewBox="0 0 100 200" style="margin: 10px auto; display: block;">
+          <rect x="20" y="20" width="60" height="100" rx="2" ry="2" fill="#ccc" />
+
+          <line id="frontAxle" x1="10" y1="30" x2="90" y2="30" stroke="#00aaff" stroke-width="8" cursor="pointer" />
+          <rect id="frontLeft" x="5" y="18" width="10" height="24" rx="2" ry="5" fill="#00aaff" />
+          <rect id="frontRight" x="85" y="18" width="10" height="24" rx="2" ry="5" fill="#00aaff" />
+
+          <rect id="babyMode" x="45" y="60" width="10" height="10" rx="2" ry="2" fill="#00aaff" cursor="pointer"/>
+
+          <line id="rearAxle" x1="10" y1="110" x2="90" y2="110" stroke="#00aaff" stroke-width="8" cursor="pointer" />
+          <rect id="rearLeft" x="5" y="98" width="10" height="24" rx="2" ry="5" fill="#00aaff" />
+          <rect id="rearRight" x="85" y="98" width="10" height="24" rx="2" ry="5" fill="#00aaff" />
+        </svg>
+      </div>
+
       <input type="hidden" name="driveMode" id="driveModeInput" value="2">
     </div>
 
@@ -197,21 +195,21 @@ const char html[] PROGMEM = R"rawliteral(
   <div id="wifiConfig" style="display: none;">
     <p id="loadingText">Loading networks...</p>
     <div id="networkList" class="network-list"></div>
-    
+
     <form id="ssidForm" style="display: flex; flex-direction: column; gap: 10px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; width: 300px; margin: 10px auto; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
       <input type="hidden" name="ssid" id="selectedSSID">
 
       <label for="password" style="font-size: 14px; font-weight: bold; color: #333;">Password:</label>
       <input type="password" id="password" name="password" style="padding: 8px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box;">
-      
+
       <div id="manualSsidForm" style="display: none;">
         <label for="manualSsid">Manual SSID:</label>
         <input type="text" id="manualSsid" name="ssid" style="padding: 8px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box;">
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <input type="submit" value="Save WiFi" onclick="saveWifi()" style="padding: 8px 15px; font-size: 14px; background-color: #00aaff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">
-        
+        <input value="Save WiFi" onclick="saveWifi()" style="padding: 8px 15px; font-size: 14px; background-color: #00aaff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">
+
         <button onclick="clearForm()" style="padding: 8px 15px; font-size: 14px; background-color: #ccc; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">
           Clear
         </button>
@@ -226,7 +224,10 @@ const char html[] PROGMEM = R"rawliteral(
 
 <script>
   let gauges;
-  let frontAxle, frontLeft, frontRight, rearAxle, rearLeft, rearRight, driveInput;
+  let manual=false;
+  let babyModeActive=false;
+  let driveMode=2;
+  let frontAxle, frontLeft, frontRight, rearAxle, rearLeft, rearRight, driveInput, babyMode;
 
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('active');
@@ -245,19 +246,33 @@ const char html[] PROGMEM = R"rawliteral(
     return rpm * 0.547 * 60 / 1000;
   }
 
+  function toggleBabyMode() {
+    setBabyMode(!babyModeActive);
+    updateControlOptions();
+  }
+
   function updateDriveMode(mode) {
     const currentMode = parseInt(driveInput.value);
-    let newMode = currentMode;
+    driveMode = currentMode;
 
-    console.log("Set drive mode " + currentMode + " " + mode);
     if (currentMode == 2 && mode == 0) {
-      newMode = 1;
+      driveMode = 1;
     } else if (currentMode == 2 && mode === 1) {
-      newMode = 0;
+      driveMode = 0;
     } else if ((currentMode == 1 && mode == 0) || (currentMode == 0 && mode == 1)) {
-      newMode = 2;
+      driveMode = 2;
     }
-    updateControlOptions(newMode);
+    updateControlOptions();
+  }
+
+  function setBabyMode(mode) {
+    babyModeActive = mode;
+    if (mode) {
+      babyMode.setAttribute("fill", "#00aaff");
+    }
+    else{
+      babyMode.setAttribute("fill", "#888");
+    }
   }
 
   function setDriveMode(mode) {
@@ -298,12 +313,14 @@ const char html[] PROGMEM = R"rawliteral(
     rearLeft = document.getElementById("rearLeft");
     rearRight = document.getElementById("rearRight");
     driveInput = document.getElementById("driveModeInput");
+    babyMode = document.getElementById("babyMode");
 
     driveInput.value = "2"; // Default value for the drive mode
 
     // Set click events for interaction with elements
     frontAxle.onclick = () => updateDriveMode(0);
     rearAxle.onclick = () => updateDriveMode(1);
+    babyMode.onclick = () => toggleBabyMode();
   });
 
   function fetchState() {
@@ -319,22 +336,20 @@ const char html[] PROGMEM = R"rawliteral(
           rpm_avg = (rpml + rpmr) / 2;
           rpm += rpm_avg;
           speed += rpm_to_kmh(rpm_avg);
-          document.getElementById("temp" + i).textContent = axisData.temperature;
-          document.getElementById("volt" + i).textContent = axisData.voltage;
+          document.getElementById("temp" + i).textContent = axisData.temperature / 10;
+          document.getElementById("volt" + i).textContent = axisData.voltage / 100;
         }
         gauges.rpm.refresh(rpm / data.axes.length);
         gauges.speed.refresh(speed / data.axes.length);
 
         const currentMode = parseInt(driveInput.value);
-        if (currentMode != parseInt(data.drive_mode)) {
-          setDriveMode(parseInt(data.drive_mode));
-        }
+        setDriveMode(parseInt(data.drive_mode));
       })
       .catch(err => console.error('Failed to fetch state:', err));
   }
 
-  function updateControlOptions(driveMode) {
-    fetch(`/set?drive=${driveMode}`).catch(err => console.error("Failed to update mode:", err));
+  function updateControlOptions() {
+    fetch(`/set?drive=${driveMode}&baby=${babyModeActive}`).catch(err => console.error("Failed to update mode:", err));
   }
 
   function enterSsidManually() {
@@ -346,10 +361,12 @@ const char html[] PROGMEM = R"rawliteral(
       manualForm.style.display = "block";
       networkList.style.display = "none";
       ssidBtn.innerText = "Visible Networks";
+      manual = true;
     } else {
       manualForm.style.display = "none";
       networkList.style.display = "block";
       ssidBtn.innerText = "Enter SSID";
+      manual = false;
       toggleWifiConfig();
     }
   }
@@ -388,37 +405,17 @@ const char html[] PROGMEM = R"rawliteral(
       });
   }
 
-  function saveWifi(manual = false) {
+  function saveWifi() {
     const ssid = manual ? document.getElementById("manualSsid").value : document.getElementById("selectedSSID").value;
-    const password = manual ? document.getElementById("manualPassword").value : document.getElementById("password").value;
+    const password = document.getElementById("password").value;
 
     if (!ssid || !password) {
       alert("Please enter SSID and password.");
       return;
     }
 
-    fetch("/save_ap", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: `ssid=${encodeURIComponent(ssid)}&password=${encodeURIComponent(password)}`
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert("WiFi saved successfully!");
-          document.getElementById("manualSsid").value = "";
-          document.getElementById("manualPassword").value = "";
-          document.getElementById("selectedSSID").value = "";
-        } else {
-          alert("Failed to save WiFi.");
-        }
-      })
-      .catch(err => {
-        console.error("Error saving WiFi:", err);
-        alert("An error occurred while saving WiFi.");
-      });
+    const req = `/save_ap?ssid=${ssid}&password=${password}`
+    fetch(req).catch(err => console.error("Failed to update WiFi:", err));
   }
 
   window.onload = function () {
@@ -434,6 +431,3 @@ const char html[] PROGMEM = R"rawliteral(
 
 </body>
 </html>
-)rawliteral";
-
-#endif // WEB_ASSETS_HPP

@@ -7,5 +7,7 @@
 #define TIME_SEND           100         
 #define SPEED_MAX_TEST      300         
 #define SPEED_STEP          20        
+#define SPEED_UPDATE_MS     50
+#define BABY_MODE_SPEED     1023
 
 #endif // CONFIGURE_HPP

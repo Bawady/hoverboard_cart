@@ -38,8 +38,6 @@ typedef enum {
 
 typedef struct {
 	int16_t speed;
-	int16_t rpm_left;
-	int16_t rpm_right;
 	uint8_t idx;
 	uint16_t bufStartFrame;
 	byte *p;
@@ -56,11 +54,15 @@ typedef struct {
 	AxisState rear_axis;
 	InputMode input_mode;
 	DriveMode drive_mode;
+	bool baby_mode;
 	unsigned long last_tol;
 } CartState;
 
 String cart_state_to_json(CartState& state);
 String axis_state_to_json(AxisState& state);
 AxisState get_axis_state(CartState& state, Axis axis);
+
+void read_axis_serial(HardwareSerial &axis_serial, HardwareSerial& debug_serial, AxisState& axis);
+void send_hover_command(HardwareSerial& hover_serial, int16_t uSpeed, int16_t uSteer);
 
 #endif // CART_STATE_HPP

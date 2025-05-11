@@ -1,11 +1,11 @@
 #include <Preferences.h>
 #include <WiFi.h>
-#include <WebServer.h>
+#include <ESPAsyncWebServer.h>
 
 #include "wifi.hpp"
 
 Preferences preferences;
-WebServer server(PORT);
+AsyncWebServer server(PORT);
 
 bool connect_to_saved_wifi(HardwareSerial& serial){
   preferences.begin("wifi", true);
@@ -59,7 +59,4 @@ void save_ap_and_reboot(String ssid, String password) {
     preferences.putString("ssid", ssid);
     preferences.putString("password", password);
     preferences.end();
-    server.send(200, "text/html", "Saved AP condif. Rebooting now.");
-    delay(1000);
-    ESP.restart();
 }

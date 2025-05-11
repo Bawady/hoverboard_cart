@@ -1,8 +1,10 @@
 #ifndef WIFI_HPP
 #define WIFI_HPP
 
-#define AP_SSID "ESP32_Hotspot"
-#define AP_PASSWORD "12345678"
+#define AP_SSID "BierkistlPink"
+#define AP_PASSWORD "bierkistl_pink"
+//#define AP_SSID "BierkistlBlau"
+//#define AP_PASSWORD "bierkistl_blau"
 #define PORT 80
 
 #include <Preferences.h>
